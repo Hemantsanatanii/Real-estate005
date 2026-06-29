@@ -1,0 +1,405 @@
+import { useState } from "react";
+
+const plan = {
+  reels: [
+    {
+      day: 1,
+      title: "The 5KG Secret",
+      hook: "Nobody talks about WHY Indian professionals gain weight so fast — here's the real reason",
+      content: "Fast-cut reel: office lunch, midnight deadlines, chai with biscuits, weekend binge. Voiceover: 'This was me. 3 months ago.' End with before/after silhouette.",
+      cta: "Save this if this is your life right now 👇",
+      type: "Education + Storytelling"
+    },
+    {
+      day: 4,
+      title: "5 Desi Foods That Are Secretly Killing Your Weight Loss",
+      hook: "You think you're eating healthy — but these 5 foods in every Indian kitchen are why you're stuck",
+      content: "POV-style kitchen walkthrough. Point to: fruit juice, multigrain atta biscuits, flavoured yogurt, 'diet' namkeen, protein bars from chemist.",
+      cta: "Comment 'LIST' and I'll send you the full replacement guide",
+      type: "Education"
+    },
+    {
+      day: 7,
+      title: "What I Ate to Lose 5KG in 30 Days (Full Day of Eating)",
+      hook: "I lost 5kg in a month eating dal, sabji, and roti. No gym, no starving.",
+      content: "Aesthetic day-of-eating shots: morning lemon water, noon thali, evening roasted chana, dinner sabji. Overlay macros in simple text.",
+      cta: "DM me 'THALI' for the exact meal plan",
+      type: "Trust-building + Selling"
+    },
+    {
+      day: 10,
+      title: "Why You Lose Weight Monday–Thursday and Gain It All Back Friday",
+      hook: "The weekend sabotage is real — and it's not your fault. Here's what's actually happening.",
+      content: "Split screen: weekday discipline vs. Friday dinner/birthday party/office party. Explain cortisol + social eating cycle in 30 seconds.",
+      cta: "Follow for the fix I'll post tomorrow",
+      type: "Education + Curiosity"
+    },
+    {
+      day: 13,
+      title: "3 Signs Your Body Is in Fat-Loss Mode",
+      hook: "Most people quit just when it's starting to work. Watch for these 3 signs.",
+      content: "Text-on-screen with voice: better sleep, clothes fitting different before scale moves, less bloating. End: 'The scale lies. Your body doesn't.'",
+      cta: "Share this with a friend who's about to give up",
+      type: "Education + Trust"
+    },
+    {
+      day: 16,
+      title: "My Client Lost 5KG — Here's Exactly What Changed",
+      hook: "She didn't change her diet dramatically. She changed ONE thing.",
+      content: "Transformation story: working professional, 2 kids, no time for gym. The one habit: eating dinner before 8pm. Real results shown.",
+      cta: "Save + comment '5KG' if you want the same result",
+      type: "Social Proof + Selling"
+    },
+    {
+      day: 19,
+      title: "Office Lunch Hack — Lose Weight Without Cooking",
+      hook: "Eating in the office cafeteria? Here's how to still lose weight",
+      content: "Reel in cafeteria setting: how to order dal over curry, roti over rice, buttermilk over cola. Quick, punchy, practical.",
+      cta: "Save this for your next office lunch",
+      type: "Education"
+    },
+    {
+      day: 22,
+      title: "I Tried 4 Popular Indian 'Diet Plans' — Here's What Happened",
+      hook: "GM diet. Keto. Intermittent Fasting. Soup diet. I tried all 4. Here's the truth.",
+      content: "Fast-cut comparison reel. Results + side effects + sustainability rating for each. End: 'None of them worked long-term. This did.'",
+      cta: "Comment 'TRUTH' and I'll share what actually works",
+      type: "Education + Curiosity"
+    },
+    {
+      day: 25,
+      title: "The 10-Minute Morning Routine That Boosted My Fat Loss by 40%",
+      hook: "10 minutes every morning. No equipment. No gym. This changed everything.",
+      content: "Morning routine reel: wake up, lemon water, 5-min walk on terrace, protein breakfast, affirmation. Simple, doable, aesthetic.",
+      cta: "Save and try this tomorrow morning 🌅",
+      type: "Education + Lifestyle"
+    },
+    {
+      day: 28,
+      title: "Last Chance: Join the Weight Loss Blueprint Before Doors Close",
+      hook: "30 days from now — you could be 5kg lighter. Or exactly where you are today. Your choice.",
+      content: "Talking-head reel, direct and warm. Recap results from clients. Show the program briefly. Urgency without pressure.",
+      cta: "Link in bio — join before [date]. DM me 'READY' if you have questions.",
+      type: "Conversion"
+    }
+  ],
+  carousels: [
+    {
+      day: 2,
+      title: "Why Indian Professionals Struggle to Lose Weight (It's Not Laziness)",
+      hook: "Slide 1: 'You're not lazy. You're just trapped in a system designed to make you fat.'",
+      slides: ["The 9-to-9 work trap", "Stress eating science", "The chai-biscuit habit loop", "Social eating pressure", "Solution slide"],
+      cta: "Save this — share with a colleague who gets it",
+      type: "Education"
+    },
+    {
+      day: 5,
+      title: "5KG in 30 Days: The Complete Roadmap",
+      hook: "Slide 1: 'Here's exactly how the Weight Loss Blueprint works — week by week.'",
+      slides: ["Week 1: Reset", "Week 2: Build habits", "Week 3: Accelerate", "Week 4: Lock in results", "What's included in the blueprint"],
+      cta: "DM me 'BLUEPRINT' to get started today",
+      type: "Selling"
+    },
+    {
+      day: 8,
+      title: "The Indian Plate Formula for Fat Loss",
+      hook: "Slide 1: 'You don't have to give up roti, rice, or dal. Just rearrange your plate.'",
+      slides: ["Old plate vs. new plate", "Protein first rule", "Fibre math", "Carb timing", "Sample plates Mon–Sun"],
+      cta: "Save this and build tonight's dinner around it",
+      type: "Education"
+    },
+    {
+      day: 11,
+      title: "10 Myths About Weight Loss Every Indian Believes (Debunked)",
+      hook: "Slide 1: 'Your mom told you this. Your trainer told you this. It's all wrong.'",
+      slides: ["'Ghee is bad'", "'Skip dinner to lose weight'", "'Fruit is safe anytime'", "'Sweating = fat loss'", "…and 6 more myths with truth"],
+      cta: "Tag a friend who needs to see this 👇",
+      type: "Education + Viral"
+    },
+    {
+      day: 14,
+      title: "Real Results: 6 Clients, 6 Stories",
+      hook: "Slide 1: 'Different ages, different cities, different struggles — same result: 5KG in 30 days.'",
+      slides: ["Client 1 – IT Manager, Bangalore", "Client 2 – CA, Mumbai", "Client 3 – Teacher, Delhi", "Client 4 – Homemaker, Hyderabad", "Client 5 – Startup founder", "Client 6 – HR professional"],
+      cta: "Your story could be next. DM me 'START'",
+      type: "Social Proof"
+    },
+    {
+      day: 17,
+      title: "How to Eat Out and Still Lose Weight (Indian Restaurant Guide)",
+      hook: "Slide 1: 'Going out doesn't mean going off-track. Here's your cheat sheet.'",
+      slides: ["North Indian restaurants", "South Indian restaurants", "Chinese/Continental", "Weddings & parties", "The golden ordering rule"],
+      cta: "Save before your next dinner plan 🍽️",
+      type: "Education + Lifestyle"
+    },
+    {
+      day: 20,
+      title: "The Mindset Shift That Makes Everything Easier",
+      hook: "Slide 1: 'You don't have a diet problem. You have a thinking problem. Here's the fix.'",
+      slides: ["From 'I can't eat this' → 'I choose not to'", "From perfection to consistency", "Identity-based habits", "What you say to yourself matters", "Daily affirmation for fat loss"],
+      cta: "Share this with someone who's been 'starting Monday' for months",
+      type: "Mindset + Trust"
+    },
+    {
+      day: 23,
+      title: "Your Weight Loss FAQ — Answered Honestly",
+      hook: "Slide 1: 'I asked my followers their biggest questions. Here are the real answers.'",
+      slides: ["'Will I gain it back?'", "'Do I need to exercise?'", "'Is this suitable for vegetarians?'", "'What if I travel?'", "'What if I have PCOS/thyroid?'"],
+      cta: "Comment your question — I'll answer in stories",
+      type: "Trust-building"
+    },
+    {
+      day: 26,
+      title: "What ₹999 Worth of Groceries Looks Like for a Week of Fat Loss",
+      hook: "Slide 1: 'Weight loss doesn't have to be expensive. Here's a full week under ₹1000.'",
+      slides: ["Monday–Tuesday meals", "Wednesday–Thursday", "Friday–Saturday", "Sunday prep", "Shopping list graphic"],
+      cta: "Save this for your weekend sabzi mandi trip 🛒",
+      type: "Education + Practical"
+    },
+    {
+      day: 29,
+      title: "What Happens to Your Body in 30 Days on the Blueprint",
+      hook: "Slide 1: 'Day 1 vs. Day 30 — a timeline of exactly what changes inside your body.'",
+      slides: ["Day 1–5: Inflammation drops", "Day 6–12: Energy improves", "Day 13–20: Scale starts moving", "Day 21–27: Clothes fit better", "Day 28–30: 5KG lighter, habits locked in"],
+      cta: "Ready to start Day 1? Link in bio 🔗",
+      type: "Conversion + Education"
+    }
+  ],
+  storytelling: [
+    {
+      day: 3,
+      title: "The Day I Couldn't Button My Shirt",
+      hook: "I was standing in a hotel room in Pune. Important client meeting in 30 minutes. My shirt wouldn't button.",
+      story: "Personal founder story: the embarrassing moment, the decision to change, the first 30 days, the result. Vulnerable, specific, real.",
+      cta: "Has this ever happened to you? Comment below.",
+      type: "Storytelling"
+    },
+    {
+      day: 9,
+      title: "She Cried on Our First Call",
+      hook: "My client, Priya, joined the blueprint on her 38th birthday. She told me she hadn't recognised herself in photos for 3 years.",
+      story: "Client journey told with warmth and specificity (with permission). The low point, the shift, the 30-day result, her words after.",
+      cta: "If Priya's story sounds familiar, you're in the right place. DM me 'PRIYA'.",
+      type: "Social Proof + Emotion"
+    },
+    {
+      day: 15,
+      title: "Why I Quit My Corporate Job to Help People Lose Weight",
+      hook: "In 2021, I was a [job role] earning well. I was also 14kg overweight, exhausted, and invisible to myself.",
+      story: "Founder credibility story: the health crisis, the self-experiment, the transformation, the pivot to helping others. Builds deep trust.",
+      cta: "Follow me if you want real weight loss advice from someone who's lived it.",
+      type: "Trust-building"
+    },
+    {
+      day: 21,
+      title: "How Ramesh Lost 6KG During Project Crunch Season",
+      hook: "Ramesh, a project manager, joined when his team was running a 70-hour work week. He didn't have time. He did it anyway.",
+      story: "Busy professional wins story. Tactical details: what he ate, when he moved, how he handled team lunches. Inspiring and aspirational.",
+      cta: "If Ramesh could do it in crunch season, you can do it too. DM me 'RAMESH'.",
+      type: "Social Proof"
+    },
+    {
+      day: 27,
+      title: "The Message That Made My Day",
+      hook: "'I haven't been this weight since my wedding.' — a message I received last Tuesday at 6am.",
+      story: "Screenshot-style storytelling post. Share the client message (with permission), what they did, what changed, what you felt reading it.",
+      cta: "This could be your message in 30 days. Join the blueprint — link in bio.",
+      type: "Conversion + Emotion"
+    }
+  ],
+  conversion: [
+    {
+      day: 6,
+      title: "Here's Exactly What's Inside the Weight Loss Blueprint",
+      hook: "Stop guessing. Here's exactly what you get when you join — and why it works for Indian professionals specifically.",
+      content: "Clear breakdown: meal plan (Indian foods), habit tracker, WhatsApp support, weekly check-ins, recipe guide. Address the 'is this for me?' objection.",
+      cta: "DM me 'DETAILS' or tap the link in bio to enroll today.",
+      type: "Selling"
+    },
+    {
+      day: 12,
+      title: "This Is for You If…",
+      hook: "Before you scroll — read this. This is specifically for you if any of these sound familiar.",
+      content: "Listicle-style post: 'You've tried diets before and gained it all back.' / 'You eat healthy-ish but nothing moves.' / 'You're a busy professional with no time.' / 'You want to lose 5KG without giving up Indian food.' End with offer.",
+      cta: "If you nodded at even one — you need this. Link in bio 🔗",
+      type: "Conversion"
+    },
+    {
+      day: 18,
+      title: "Price vs. Cost: What Staying Overweight Is Actually Costing You",
+      hook: "The blueprint costs less than 2 months of your gym membership. But here's what NOT acting costs you.",
+      content: "Reframe the investment: medical bills, low energy productivity loss, lost confidence, clothes that don't fit, missed moments. Then position the offer as an easy decision.",
+      cta: "The investment is small. The cost of waiting isn't. Enroll today — link in bio.",
+      type: "Conversion"
+    },
+    {
+      day: 24,
+      title: "Limited Spots Open — Here's Why I Cap It",
+      hook: "I only take [X] clients per month. Not as a marketing trick. Here's the real reason.",
+      content: "Transparency-based urgency: personalised support, quality over scale, results track record. Show the waitlist/intake process. Make joining feel exclusive and cared for.",
+      cta: "DM me 'SPOT' to check availability before [date].",
+      type: "Conversion + Urgency"
+    },
+    {
+      day: 30,
+      title: "30 Days Ago You Saw My First Post. What Changed?",
+      hook: "This is Day 30 of my content series. And the last day to join at this price.",
+      content: "Full-circle closing post: recap the journey, the results shared, the stories told. Make the reader feel the momentum. Direct and warm closing offer.",
+      cta: "Join the Weight Loss Blueprint — link in bio. Last day at this price. Don't wait.",
+      type: "Conversion + Closing"
+    }
+  ]
+};
+
+const typeColors = {
+  "Education": { bg: "#E8F5E9", text: "#2E7D32", border: "#A5D6A7" },
+  "Education + Storytelling": { bg: "#E3F2FD", text: "#1565C0", border: "#90CAF9" },
+  "Trust-building": { bg: "#FFF3E0", text: "#E65100", border: "#FFCC80" },
+  "Trust-building + Selling": { bg: "#FFF3E0", text: "#E65100", border: "#FFCC80" },
+  "Social Proof": { bg: "#F3E5F5", text: "#6A1B9A", border: "#CE93D8" },
+  "Social Proof + Emotion": { bg: "#F3E5F5", text: "#6A1B9A", border: "#CE93D8" },
+  "Social Proof + Selling": { bg: "#F3E5F5", text: "#6A1B9A", border: "#CE93D8" },
+  "Conversion": { bg: "#FCE4EC", text: "#880E4F", border: "#F48FB1" },
+  "Conversion + Education": { bg: "#FCE4EC", text: "#880E4F", border: "#F48FB1" },
+  "Conversion + Emotion": { bg: "#FCE4EC", text: "#880E4F", border: "#F48FB1" },
+  "Conversion + Urgency": { bg: "#FCE4EC", text: "#880E4F", border: "#F48FB1" },
+  "Conversion + Closing": { bg: "#FCE4EC", text: "#880E4F", border: "#F48FB1" },
+  "Selling": { bg: "#FCE4EC", text: "#880E4F", border: "#F48FB1" },
+  "Storytelling": { bg: "#E8EAF6", text: "#283593", border: "#9FA8DA" },
+  "Mindset + Trust": { bg: "#FFF8E1", text: "#F57F17", border: "#FFE082" },
+  "Education + Curiosity": { bg: "#E0F7FA", text: "#006064", border: "#80DEEA" },
+  "Education + Lifestyle": { bg: "#E0F7FA", text: "#006064", border: "#80DEEA" },
+  "Education + Practical": { bg: "#E0F7FA", text: "#006064", border: "#80DEEA" },
+  "Education + Viral": { bg: "#E0F7FA", text: "#006064", border: "#80DEEA" },
+  "Trust + Education": { bg: "#FFF3E0", text: "#E65100", border: "#FFCC80" },
+  "Trust-building + Education": { bg: "#FFF3E0", text: "#E65100", border: "#FFCC80" },
+};
+
+function getTypeStyle(type) {
+  return typeColors[type] || { bg: "#F5F5F5", text: "#333", border: "#CCC" };
+}
+
+const sections = [
+  { key: "reels", label: "🎬 Reels", count: 10, color: "#FF6B6B", icon: "▶" },
+  { key: "carousels", label: "📊 Carousels", count: 10, color: "#4ECDC4", icon: "≡" },
+  { key: "storytelling", label: "✍️ Storytelling Posts", count: 5, color: "#A8E6CF", icon: "♥" },
+  { key: "conversion", label: "💰 Conversion Posts", count: 5, color: "#FFD93D", icon: "★" },
+];
+
+export default function ContentPlan() {
+  const [activeSection, setActiveSection] = useState("reels");
+  const [expandedCard, setExpandedCard] = useState(null);
+
+  const currentData = plan[activeSection];
+
+  return (
+    <div style={{
+      fontFamily: "'Georgia', serif",
+      minHeight: "100vh",
+      background: "linear-gradient(135deg, #0F0C29 0%, #302B63 50%, #24243E 100%)",
+      color: "#fff",
+      padding: "0 0 60px 0"
+    }}>
+      {/* Header */}
+      <div style={{
+        background: "rgba(255,255,255,0.05)",
+        backdropFilter: "blur(20px)",
+        borderBottom: "1px solid rgba(255,255,255,0.1)",
+        padding: "32px 24px 24px",
+        textAlign: "center"
+      }}>
+        <div style={{
+          display: "inline-block",
+          background: "linear-gradient(90deg, #FF6B6B, #FFD93D, #4ECDC4)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          fontSize: "11px",
+          fontFamily: "'Courier New', monospace",
+          letterSpacing: "4px",
+          marginBottom: "10px",
+          fontWeight: "bold"
+        }}>
+          INSTAGRAM CONTENT STRATEGY
+        </div>
+        <h1 style={{
+          margin: "0 0 6px",
+          fontSize: "clamp(22px, 5vw, 32px)",
+          fontWeight: "900",
+          letterSpacing: "-0.5px",
+          color: "#fff"
+        }}>
+          Weight Loss Blueprint
+        </h1>
+        <p style={{ margin: "0 0 16px", color: "rgba(255,255,255,0.6)", fontSize: "14px", fontFamily: "sans-serif" }}>
+          30-Day Content Plan · Indian Professionals · 5KG in 30 Days
+        </p>
+        <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
+          {[
+            { label: "30 Days", sub: "Planned" },
+            { label: "30 Posts", sub: "Total" },
+            { label: "4 Types", sub: "Formats" },
+            { label: "Mix", sub: "Edu+Sell" }
+          ].map(stat => (
+            <div key={stat.label} style={{
+              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: "12px",
+              padding: "10px 16px",
+              textAlign: "center",
+              minWidth: "72px"
+            }}>
+              <div style={{ fontSize: "18px", fontWeight: "800", color: "#FFD93D" }}>{stat.label}</div>
+              <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.5)", fontFamily: "sans-serif", letterSpacing: "1px" }}>{stat.sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab Nav */}
+      <div style={{
+        display: "flex",
+        gap: "8px",
+        padding: "20px 16px 8px",
+        overflowX: "auto",
+        scrollbarWidth: "none"
+      }}>
+        {sections.map(s => (
+          <button
+            key={s.key}
+            onClick={() => { setActiveSection(s.key); setExpandedCard(null); }}
+            style={{
+              flex: "0 0 auto",
+              padding: "10px 18px",
+              borderRadius: "100px",
+              border: activeSection === s.key ? `2px solid ${s.color}` : "2px solid rgba(255,255,255,0.15)",
+              background: activeSection === s.key ? s.color : "rgba(255,255,255,0.06)",
+              color: activeSection === s.key ? "#000" : "rgba(255,255,255,0.8)",
+              fontWeight: "700",
+              fontSize: "12px",
+              fontFamily: "sans-serif",
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+              transition: "all 0.2s"
+            }}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Section Label */}
+      <div style={{ padding: "12px 20px 4px" }}>
+        <span style={{
+          fontFamily: "sans-serif",
+          fontSize: "11px",
+          letterSpacing: "3px",
+          color: "rgba(255,255,255,0.4)",
+          textTransform: "uppercase"
+        }}>
+          {sections.find(s => s.key === activeSection)?.count} ideas · tap to expand
+        </span>
+      </div>
+
+      {/* Cards */}
+      <div style={{ padding: "8px 16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+        {currentD
